@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-rental">
+
+	<insert id="insertRentalDefaulte" parameterType="lx.project.team3.vo.RentalVO">
+		 insert into
+		 tb_rental(start_time, rental_status, expectecd_return_time, location_no)
+		 values (#{startTime}, #{rentalStatus}, #{expectecdReturnTime}, #{locationNo})
+	
+	</insert>
+
+</mapper>

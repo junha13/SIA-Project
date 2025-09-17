@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper-item">
+
+	<!-- ==========  ========== -->
+	<select id="selectItemByItemNo" parameterType="int" resultType="lx.project.team3.vo.ItemVO">
+		select item_no, 
+			item_name, 
+			status, 
+			time_price, 
+			item_content,
+			user_id, 
+			category_no, 
+			location_no,
+			image
+		from tb_item
+		where 1=1
+			and item_no = #{itemNo}
+	</select>
+	
+	<!-- ==========  ========== -->
+	<select id="selectItemList" resultType="lx.project.team3.vo.ItemVO">
+		select item_no, 
+			item_name, 
+			status, 
+			time_price, 
+			item_content,
+			user_id, 
+			category_no, 
+			location_no,
+			image
+		from tb_item
+	</select>
+	
+	<!-- ==========  ========== -->
+	<insert id="insertDB" parameterType="lx.project.team3.vo.ItemVO">
+		insert into
+		tb_item(item_name, status, cost_per+minute, item_content, user_id, category_no, location_no, image)
+		values(#{itemName}, #{status}, #{costPerMinute}, #{itemContent}, #{userId}, #{categoryNO}, #{locationNo}, #{image})
+	</insert>
+	
+	<!-- 위경도 insert하면서 pk아이디 가져오기 -->
+	<!-- useGeneratedKeys="true"로 설정해서, 자동 생성된 키 값들을 가져올 거라는 것을 명시합니다. 다음에, keyProperty로, 어떤 필드 값으로 받을지를 명시해 줍니다. -->
+	<insert id="insertLocationDB" parameterType="lx.project.team3.vo.LocationVO" useGeneratedKeys="true" keyProperty="locationNo">
+		insert into
+		tb_Location(LATITUDE, LONGITUDE)
+		values(#{LATITUDE}, #{LONGITUDE})
+		RETURNING location_no
+	</insert>
+	
+	<update id="updateItem" parameterType="lx.project.team3.vo.ItemVO">
+		update tb_item
+			<trim prefix="SET" suffixOverrides=", ">
+				<if test="itemName != null">item_name = #{itemName}, </if>
+				<if test="status != null">status = #{status}, </if>
+				<if test="timePrice != null">time_price = #{timePrice}, </if>
+				<if test="itemContent != null">item_contetnt = #{itemContent}, </if>
+				<if test="categoryId != null">category_id = #{categoryId}</if>
+				<if test="image != null">image = #{image}</if>
+				<!--<if test="locationId != null">location_id = #{locationId}</if> -->
+			</trim>
+		where item_no = ${itemNo}
+	</update>
+	
+	<delete id="deleteItem" parameterType="int">
+		delete FROM tb_item
+		where item_no = ${itemNo}
+	</delete>
+</mapper>
